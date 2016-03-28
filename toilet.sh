@@ -68,8 +68,6 @@ comment_linecount=$(printf '%s\n' "$figlet_header" | cut -f 6 -d ' ')
 # for each letter representation line
 i=0; while [ "$i" -lt $character_height ]
 do
-    current_line=""
-
     # for each input letter:
     while IFS= read -r letter
     do
@@ -83,17 +81,19 @@ do
         # start_offset = 1 line offset for `tail -n +x` + 1 header line + x comment lines + <however many letter there are before our required letter> + <which representation line we're currently printing>
         start_offset=$((1+1+comment_linecount+((letter_ord-32)*character_height)+i))
 
-        current_line="$current_line"$(tail -n "+$start_offset" "$figlet_font_file" | head -n 1)
+        letter_line=$(tail -n "+$start_offset" "$figlet_font_file" | head -n 1)
+
+        # get terminator character (rightmost char in all letter lines)
+        terminator_char=$(printf '%s' "$letter_line" | tail -c 1)
+
+        printf '%s' "$letter_line" | sed "s/[${terminator_char}]//g;s/[$hardblank]/ /g"
 
     done <<EOF
 $(printf "$input_string" | sed -e 's/\(.\)/\1\
 /g')
 EOF
 
-    # get terminator character (rightmost char in all letter lines)
-    terminator_char=$(printf '%s' "$current_line" | tail -c 1)
-
-    printf '%s\n' "$current_line" | sed "s/[${terminator_char}]//g;s/[$hardblank]/ /g"
+    printf '\n'
 
     i=$((i+1))
 done
