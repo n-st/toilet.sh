@@ -4,7 +4,7 @@
 #  An incomplete reimplementation of the TOIlet text-to-ASCII-art converter,
 #  written completely in (hopefully) POSIX-compliant shell script.
 
-# Copyright 2016 n.st (https://github.com/n-st/)
+# Copyright 2016 n.st (https://github.com/n-st/) and izabera (irc.freenode.net/#bash)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
