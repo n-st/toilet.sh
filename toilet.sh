@@ -112,7 +112,7 @@ do
 
         printf '%s' "$letter_line" | sed "s/[${terminator_char}]//g;s/[$hardblank]/ /g"
 
-    done
+    done | tr -d '\n'
 
     printf '\n'
 
