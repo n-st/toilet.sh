@@ -1,14 +1,61 @@
 #!/bin/sh
 
-figlet_font_file="/usr/share/figlet/smblock.tlf"
-input_string="Hello World"
+while [ $# -gt 0 ]
+do
+    key="$1"
+
+    case $key in
+        -f)
+            if [ $# -gt 1 ]
+            then
+                figlet_font_file="$2"
+                shift # past argument
+            fi
+            ;;
+        *)
+            if [ -n "$input_string" ]
+            then
+                input_string="$input_string $1"
+            else
+                input_string="$1"
+            fi
+        ;;
+    esac
+    shift # past argument or value
+done
+
+if [ -z "$figlet_font_file" ]
+then
+    printf '%s\n' "No font file specified. Aborting." 1>&2
+    exit 1
+fi
+
+if [ ! -f "$figlet_font_file" ]
+then
+    # Maybe the user gave us the font name instead of the full path?
+    # Try a few default paths and extensions:
+    if [ -f "/usr/share/figlet/${figlet_font_file}.flf" ]
+    then
+        figlet_font_file="/usr/share/figlet/${figlet_font_file}.flf"
+    fi
+    if [ -f "/usr/share/figlet/${figlet_font_file}.tlf" ]
+    then
+        figlet_font_file="/usr/share/figlet/${figlet_font_file}.tlf"
+    fi
+fi
+
+if [ ! -f "$figlet_font_file" ]
+then
+    printf '%s\n' "Font file '$figlet_font_file' does not exit. Aborting." 1>&2
+    exit 1
+fi
 
 # parse figlet header
 figlet_header=$(head -n 1 "$figlet_font_file")
 figlet_signature=$(printf '%s\n' "$figlet_header" | head -c 5)
 if [ "$figlet_signature" != "flf2a" ] && [ "$figlet_signature" != "tlf2a" ]
 then
-    printf "Input file is neither a FIGlet font nor a TOIlet font. Aborting." 1>&2
+    printf '%s\n' "Input file is neither a FIGlet font nor a TOIlet font. Aborting." 1>&2
     exit 1
 fi
 # get character height
