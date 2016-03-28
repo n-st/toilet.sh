@@ -85,12 +85,8 @@ then
 fi
 # get character height
 character_height=$(printf '%s\n' "$figlet_header" | cut -f 2 -d ' ')
-# get nosmush letter
-# tail on Solaris expects a "real" input file, even when reading from stdin.
-# sed doesn't have this limitation, but requires newline-terminated input.
-# Simple string manipulation, as suggested by izabera:
-hardblank=$(printf '%.6s' "$figlet_header")
-hardblank=${hardblank#"${hardblank%?}"}
+# get nosmush character (5th character of the header line)
+hardblank=${figlet_header#?????} hardblank=${hardblank%"${hardblank#?}"}
 # get comment line count
 comment_linecount=$(printf '%s\n' "$figlet_header" | cut -f 6 -d ' ')
 
