@@ -71,6 +71,10 @@ then
 fi
 
 
+# Solaris's /usr/bin/tail isn't POSIX-compliant (doesn't support -n)
+PATH="/usr/xpg4/bin/:$PATH"
+
+
 # parse figlet header
 figlet_header=$(head -n 1 "$figlet_font_file")
 figlet_signature=$(printf '%.5s' "$figlet_header")
