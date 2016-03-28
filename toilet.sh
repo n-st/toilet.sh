@@ -82,7 +82,11 @@ fi
 # get character height
 character_height=$(printf '%s\n' "$figlet_header" | cut -f 2 -d ' ')
 # get nosmush letter
-hardblank=$(printf '%.6s' "$figlet_header" | tail -c 1)
+# tail on Solaris expects a "real" input file, even when reading from stdin.
+# sed doesn't have this limitation, but requires newline-terminated input.
+# Simple string manipulation, as suggested by izabera:
+hardblank=$(printf '%.6s' "$figlet_header")
+hardblank=${hardblank#"${hardblank%?}"}
 # get comment line count
 comment_linecount=$(printf '%s\n' "$figlet_header" | cut -f 6 -d ' ')
 
@@ -108,7 +112,7 @@ do
         letter_line=$(tail -n "+$start_offset" "$figlet_font_file" | head -n 1)
 
         # get terminator character (rightmost char in all letter lines)
-        terminator_char=$(printf '%s' "$letter_line" | tail -c 1)
+        terminator_char=${letter_line#"${letter_line%?}"}
 
         printf '%s' "$letter_line" | sed "s/[${terminator_char}]//g;s/[$hardblank]/ /g"
 
