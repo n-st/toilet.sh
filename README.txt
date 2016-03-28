@@ -17,6 +17,8 @@
  (_-< / _ \/ -_) / /  / /      | |   | (_) |  | |  | | / -_) |  _|
 /___//_//_/\__/ /_/  /_/       |_|    \___/  |___| |_| \___|  \__|
 
+              ~~ Prepared font directory branch ~~~
+
 
 toilet.sh is an incomplete reimplementation of the TOIlet text-to-ASCII-art
 converter, written completely in (hopefully) POSIX-compliant shell script.
@@ -25,6 +27,14 @@ toilet.sh can read FIGlet and TOIlet font files (.flf, .tlf), based on the
 format description at [1].
 For the sake of simplicity, it ignores all character composition rules, so it
 basically behaves like `toilet -W`.
+
+This branch relies on a pre-created font directory to create the ASCII art.
+The directory must be named after the font's name and contain one file per
+letter, with a filename of '%d.letter', where %d is the decimal representation
+of the letter's ASCII value.
+
+Use `toilet-prepare-font.sh` to create these directories (using the usual -f
+parameter).
 
 Supported parameters:
     -f <font file>
