@@ -101,6 +101,7 @@ do
     while read -r letter
     do
         [ "$letter" ] || continue
+
         # determine its ascii value
         letter_ord=$(printf '%d\n' \'"$letter")
 
