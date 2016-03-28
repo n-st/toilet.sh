@@ -96,12 +96,12 @@ comment_linecount=$(printf '%s\n' "$figlet_header" | cut -f 6 -d ' ')
 
 
 # for each letter representation line
-i=0; while [ "$i" -lt $character_height ]
+IFS= i=0; while [ "$i" -lt $character_height ]
 do
     # for each input letter:
-    printf "$input_string" | sed -e 's/\(.\)/\1\
-/g' | \
-    while IFS= read -r letter
+    printf '%s\n' "$input_string" | sed -e 's/./&\
+/g' |
+    while read -r letter
     do
         # determine its ascii value
         letter_ord=$(printf '%d\n' \'"$letter")
@@ -113,12 +113,8 @@ do
         # start_offset = 1 line offset for `tail -n +x` + 1 header line + x comment lines + <however many letter there are before our required letter> + <which representation line we're currently printing>
         start_offset=$((1+1+comment_linecount+((letter_ord-32)*character_height)+i))
 
-        letter_line=$(tail -n "+$start_offset" "$figlet_font_file" | head -n 1)
-
-        # get terminator character (rightmost char in all letter lines)
-        terminator_char=${letter_line#"${letter_line%?}"}
-
-        printf '%s\n' "$letter_line" | sed "s/[${terminator_char}]//g;s/[$hardblank]/ /g"
+                                                 # v---------- remove rightmost char ----------v
+        sed -e "$start_offset!d;s/[$hardblank]/ /g;:a" -e "s/\(.\)\(.*\)\1$/\2\1/;ta" -e "s/.$//;q" "$figlet_font_file"
 
     done | tr -d '\n'
 
