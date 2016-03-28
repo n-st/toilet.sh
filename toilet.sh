@@ -114,7 +114,7 @@ do
         # get terminator character (rightmost char in all letter lines)
         terminator_char=${letter_line#"${letter_line%?}"}
 
-        printf '%s' "$letter_line" | sed "s/[${terminator_char}]//g;s/[$hardblank]/ /g"
+        printf '%s\n' "$letter_line" | sed "s/[${terminator_char}]//g;s/[$hardblank]/ /g"
 
     done | tr -d '\n'
 
