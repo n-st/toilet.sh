@@ -1,5 +1,24 @@
 #!/bin/sh
 
+# toilet.sh
+#  An incomplete reimplementation of the TOIlet text-to-ASCII-art converter,
+#  written completely in (hopefully) POSIX-compliant shell script.
+
+# Copyright 2016 n.st (https://github.com/n-st/)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
 while [ $# -gt 0 ]
 do
     key="$1"
@@ -23,6 +42,7 @@ do
     esac
     shift # past argument or value
 done
+
 
 if [ -z "$figlet_font_file" ]
 then
@@ -50,6 +70,7 @@ then
     exit 1
 fi
 
+
 # parse figlet header
 figlet_header=$(head -n 1 "$figlet_font_file")
 figlet_signature=$(printf '%s\n' "$figlet_header" | head -c 5)
@@ -64,6 +85,7 @@ character_height=$(printf '%s\n' "$figlet_header" | cut -f 2 -d ' ')
 hardblank=$(printf '%s\n' "$figlet_header" | head -c 6 | tail -c 1)
 # get comment line count
 comment_linecount=$(printf '%s\n' "$figlet_header" | cut -f 6 -d ' ')
+
 
 # for each letter representation line
 i=0; while [ "$i" -lt $character_height ]
