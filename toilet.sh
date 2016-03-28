@@ -86,7 +86,8 @@ fi
 # get character height
 character_height=$(printf '%s\n' "$figlet_header" | cut -f 2 -d ' ')
 # get nosmush character (5th character of the header line)
-hardblank=${figlet_header#?????} hardblank=${hardblank%"${hardblank#?}"}
+hardblank=${figlet_header#?????}
+hardblank=${hardblank%"${hardblank#?}"}
 # get comment line count
 comment_linecount=$(printf '%s\n' "$figlet_header" | cut -f 6 -d ' ')
 
