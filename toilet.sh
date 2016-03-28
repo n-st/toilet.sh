@@ -73,7 +73,7 @@ fi
 
 # parse figlet header
 figlet_header=$(head -n 1 "$figlet_font_file")
-figlet_signature=$(printf '%s\n' "$figlet_header" | head -c 5)
+figlet_signature=$(printf '%.5s\n' "$figlet_header")
 if [ "$figlet_signature" != "flf2a" ] && [ "$figlet_signature" != "tlf2a" ]
 then
     printf '%s\n' "Input file is neither a FIGlet font nor a TOIlet font. Aborting." 1>&2
@@ -82,7 +82,7 @@ fi
 # get character height
 character_height=$(printf '%s\n' "$figlet_header" | cut -f 2 -d ' ')
 # get nosmush letter
-hardblank=$(printf '%s\n' "$figlet_header" | head -c 6 | tail -c 1)
+hardblank=$(printf '%.6s\n' "$figlet_header" | tail -c 1)
 # get comment line count
 comment_linecount=$(printf '%s\n' "$figlet_header" | cut -f 6 -d ' ')
 
