@@ -69,6 +69,8 @@ comment_linecount=$(printf '%s\n' "$figlet_header" | cut -f 6 -d ' ')
 i=0; while [ "$i" -lt $character_height ]
 do
     # for each input letter:
+    printf "$input_string" | sed -e 's/\(.\)/\1\
+/g' | \
     while IFS= read -r letter
     do
         # determine its ascii value
@@ -88,10 +90,7 @@ do
 
         printf '%s' "$letter_line" | sed "s/[${terminator_char}]//g;s/[$hardblank]/ /g"
 
-    done <<EOF
-$(printf "$input_string" | sed -e 's/\(.\)/\1\
-/g')
-EOF
+    done
 
     printf '\n'
 
